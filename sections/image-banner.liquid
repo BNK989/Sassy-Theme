@@ -1,0 +1,234 @@
+{{ 'custom.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #bnk-banner--{{section.id}} {
+    position: relative;
+    display: flex;
+    {% if section.settings.image_desktop == blank %}
+      background-color: #ffeef6;
+    {% endif %}
+  }
+  #bnk-banner--{{section.id}} {
+    width: 100%;
+  }
+  #bnk-banner--{{section.id}} img {
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  #bnk-banner--{{section.id}} img.bnk-banner-mobile {
+    display: none;
+  }
+  #bnk-banner--{{section.id}} .bnk-banner-content {
+    position: absolute;
+    bottom: {{ section.settings.desktop_bottom_px }}px;
+    left: 49%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2%;
+    height: 2%;
+    text-align: center;
+  }
+  #bnk-banner--{{section.id}} .bnk-banner-content > h1 {
+    font-size: 52px;
+  }
+
+  
+    #bnk-banner--{{section.id}} .bnk-banner-content .bnk-btn-wrap > .bnk-btn {
+      position: absolute;
+    }
+
+  
+  @media only screen and (max-width: 728px) {
+    {% if section.settings.image_mobile != blank %}
+      #bnk-banner--{{section.id}} .bnk-banner-content {
+        bottom: {{ section.settings.mobile_bottom_px }}px;
+      }
+      #bnk-banner--{{section.id}} img.bnk-banner-mobile {
+        display: block;
+      }
+      #bnk-banner--{{section.id}} img.bnk-banner-desktop {
+        display: none;
+      }
+    {% endif %}
+    #bnk-banner--{{section.id}} .bnk-banner-content > h1 {
+      position: relative;
+      bottom: 0.2em;
+    }
+    #bnk-banner--{{section.id}} .bnk-banner-content .bnk-btn-wrap > .bnk-btn {
+      bottom: {{ section.settings.mobile_bottom_px }}px;
+    }
+    .bnk-btn{
+      font-size: 10px;
+    }
+  }
+
+{% endstyle %}
+
+
+<section id="bnk-banner--{{section.id}}">
+  
+  {% assign mobile_image_size =  section.settings.image_size | split: 'x' | first | divided_by: 4 | append: 'x' %}
+  
+  {% if section.settings.image_desktop != blank %}
+
+  {% if section.settings.disable_lazy_load %}<link rel="preload" href="{{section.settings.image_desktop | img_url: section.settings.image_size}}" as="image">{% endif %}
+
+    <a href="{{ section.settings.button_link }}">
+      <div class="tempdiv">
+        <img loading="lazy" class="bnk-banner-desktop  {% unless section.settings.disable_lazy_load %} bnk-lazy-load{% endunless %}" src="{{section.settings.image_desktop | img_url: section.settings.image_size}}" alt="{{section.settings.image_desktop.alt}}">
+      </div>
+    </a>
+      
+    {% else %}
+  <img loading="lazy" class="bnk-banner-desktop  {% unless section.settings.disable_lazy_load %} bnk-lazy-load{% endunless %}" src="{{section.settings.image_mobile | img_url: section.settings.image_size}}" alt="{{section.settings.image_mobile.alt}}">
+  {% endif %}
+
+  
+  {% if section.settings.image_mobile != blank %}
+  <a href="{{ section.settings.button_link }}">
+  {% if section.settings.disable_lazy_load %}<link rel="preload" href="{{section.settings.image_mobile | img_url: mobile_image_size}}" as="image">{% endif %}
+    <img loading="lazy" class="bnk-banner-mobile  {% unless section.settings.disable_lazy_load %} bnk-lazy-load{% endunless %}" src="{{section.settings.image_mobile | img_url: mobile_image_size}}" alt="{{section.settings.image_mobile.alt}}">
+  {% else %}
+    <img loading="lazy" class="bnk-banner-mobile  {% unless section.settings.disable_lazy_load %} bnk-lazy-load{% endunless %}" src="{{section.settings.image_desktop | img_url: mobile_image_size}}" alt="{{section.settings.image_desktop.alt}}">
+  {% endif %}
+  </a>
+  
+
+  {% if section.settings.image_desktop == blank and section.settings.image_mobile == blank %}
+    {{ 'lifestyle-1' | placeholder_svg_tag }}
+  {% endif %}
+  {% if section.settings.button_text != blank %}
+
+    <div class="bnk-banner-content">
+
+      {% if section.settings.button_text != blank %}
+        <div class="bnk-btn-wrap">
+          <a href="{{ section.settings.button_link }}" class="bnk-btn">{{ section.settings.button_text }}</a>
+        </div>
+      {% endif %}
+    </div>
+
+  {% endif %}
+
+</section>
+
+{% schema %}
+  {
+    "name": "Type1",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Banner images"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Desktop image"
+      },
+      {
+        "type": "range",
+        "id": "desktop_bottom_px",
+        "label": "Desktop Button Bottom Edge",
+        "min": 0,
+        "max": 400,
+        "default": 70,
+        "step": 5,
+        "unit": "px",
+        "info": "The range is from 0px to 400px"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Mobile image"
+      },
+      {
+        "type": "range",
+        "id": "mobile_bottom_px",
+        "label": "Mobile Button Bottom Edge",
+        "min": -60,
+        "max": 210,
+        "default": 0,
+        "step": 5,
+        "unit": "px",
+        "info": "The range is from -60px to 210px"
+      },
+      {
+        "type": "header",
+        "content": "Banner content"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link",
+        "default": "/"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text"
+      },
+      {
+        "type": "header",
+        "content": "Style"
+      },
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "options": [
+          {
+            "value": "300x",
+            "label": "Small"
+          },
+          {
+            "value": "600x",
+            "label": "Medium"
+          },
+          {
+            "value": "2000x",
+            "label": "Large"
+          }
+        ],
+       "default": "2000x"
+      },
+      {
+        "type": "checkbox",
+        "id": "btn_bottom",
+        "label": "Align button bottom"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "button_color",
+        "label": "Button color",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button text color",
+        "default": "#fff"
+      },
+      {
+        "type": "checkbox",
+        "id": "disable_lazy_load",
+        "label": "Disable Lazy Load",
+        "default": false
+      }
+    ],
+    "presets": [
+      {
+        "category": "Image banner (WeDev)",
+        "name":"Image banner (WeDev)"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,15 @@
+  <div class="color-selector-container">
+    {% assign additional_colors = product.metafields.custom.additionalcolors.value %}
+    {% assign first_title_color = product.options_by_name['Color'].values  %}
+    <p class="color-selector-title">Color: {{ first_title_color }}</p>
+    <div class="color-options">
+      {% for product in additional_colors %}
+            {% assign variant_color = product.metafields.custom.colornumber | default: product.option1.value %}
+            <a class="product-color-option" style="background-color: {{ variant_color }}" href={{ product.url }}>
+              {% if product.metafields.custom.colorimage != blank %}
+                <img src="{{ product.metafields.custom.colorimage | img_url }}" loading="lazy" class="metafield-file_refrence">
+              {% endif %}
+            </a>
+      {% endfor %}
+    </div>
+  </div>

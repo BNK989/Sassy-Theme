@@ -1,0 +1,10 @@
+{% comment %} Ships by {% endcomment %}
+        {% if product.metafields.custom.estdelivery.value != blank %}  
+           {% assign products_estimate_delivery = product.metafields.custom.estdelivery.value | times: 86400 %}
+           {% assign time = "now" | date: "%s" %}
+           {% assign timeplus = time | plus: products_estimate_delivery | date: "%A %b %d" %}
+            <div class="delivery-estimate">
+                 🛵 Estimated Delivery:<b> {{ timeplus }}</b>  
+            </div>
+          {% endif %}
+{% comment %} End of Ships by {% endcomment %} 

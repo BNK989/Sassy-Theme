@@ -1,0 +1,173 @@
+{% if template == 'collection' or template == 'product' or template == 'collection.num' or template == 'collection.edit'%}
+  {% liquid 
+    assign text1 = section.settings.text1
+    assign link1 = section.settings.link1
+    assign text2 = section.settings.text2
+    assign link2 = section.settings.link2
+    assign text3 = section.settings.text3
+    assign link3 = section.settings.link3
+  %}
+  
+  {% if text1 != blank or text2 != blank or text3 != blank %}
+    {% style %}
+  
+      .bnk-announcement-bar {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        max-height: 64px;
+        background-color: {{ section.settings.background-color }};
+        {% if section.settings.background-color != section.settings.background-to-gradient %}
+        background-image: linear-gradient(30deg, {{ section.settings.background-color }}, {{ section.settings.background-to-gradient }});
+        {% endif %}
+      }
+      .bnk-announcement-bar > * {
+        text-shadow: 2px 2px #7c7960;
+        padding: 1em 4em;
+        text-align: center;
+        text-decoration: initial;
+        text-transform: uppercase;
+        font-family: Montserrat, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 17px;
+        letter-spacing: 0.2em;
+        color: #fff;
+      }
+      @media (max-width: 1400px) and (min-width: 1140px) {
+        .bnk-announcement-bar > * {
+          font-size: 11px;
+        }
+      }
+
+      {% if text1 != blank and text2 != blank and text3 != blank %}
+        @media only screen and (max-width: 1140px) {
+          .bnk-announcement-bar > *:not(:nth-child(3)) {
+            display: none;
+          }
+        }
+      {% endif %}
+    {% endstyle %}
+  {% endif %}
+  
+  {% if text1 != blank %}
+    {% if link1 != blank %}
+      <a href="{{ link1 }}">
+    {% else %}
+      <div>
+    {% endif %}
+        {{ text1 | newline_to_br}}
+    {% if link1 != blank %}
+      </a>
+    {% else %}
+      </div>
+    {% endif %}
+  {% endif %}
+  
+  {% if text2 != blank %}
+    {% if link2 != blank %}
+      <a href="{{ link2 }}">
+    {% else %}
+      <div>
+    {% endif %}
+        {{ text2 | newline_to_br}}
+    {% if link2 != blank %}
+      </a>
+    {% else %}
+      </div>
+    {% endif %}
+  {% endif %}
+  
+  {% if text3 != blank %}
+    {% if link3 != blank %}
+      <a href="{{ link3 }}">
+    {% else %}
+      <div>
+    {% endif %}
+        {{ text3 | newline_to_br}}
+    {% if link3 != blank %}
+      </a>
+    {% else %}
+      </div>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Announcement bar (BNK)",
+    "class": "bnk-announcement-bar",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "This section shows only in collection and product templates."
+      },
+      {
+        "type": "header",
+        "content": "Announcement 1"
+      },
+      {
+        "type": "html",
+        "id": "text1",
+        "label": "Announcement 1 text"
+      },
+      {
+        "type": "url",
+        "id": "link1",
+        "label": "Announcement 1 link"
+      },
+      {
+        "type": "header",
+        "content": "Announcement 2"
+      },
+      {
+        "type": "html",
+        "id": "text2",
+        "label": "Announcement 2 text"
+      },
+      {
+        "type": "url",
+        "id": "link2",
+        "label": "Announcement 2 link"
+      },
+      {
+        "type": "header",
+        "content": "Announcement 3"
+      },
+      {
+        "type": "html",
+        "id": "text3",
+        "label": "Announcement 3 text"
+      },
+      {
+        "type": "url",
+        "id": "link3",
+        "label": "Announcement 3 link"
+      },
+      {
+        "type": "header",
+        "content": "Design"
+      },
+      {
+        "type": "color",
+        "id": "background-color",
+        "default": "#121212",
+        "label": "background color",
+        "info": "select simple background color"
+      },
+      {
+        "type": "color",
+        "id": "background-to-gradient",
+        "default": "#121212",
+        "label": "background gradient color",
+        "info": "select background color gradient"
+      }
+    ],
+   "presets": [
+      {
+        "name": "Announcement bar (BNK)"
+      }
+   ]
+  }
+{% endschema %}

@@ -1,0 +1,89 @@
+{% assign currentTime = "now" | date: '%s' | times: 1 %}
+{% assign endAtDate = section.settings.countdown-bar-end-date | date: '%s'  %}
+{% assign endAtTime = section.settings.countdown-bar-end-time | date: '%H' |times: 3600 %}
+{% assign endDateTime = endAtDate |plus: endAtTime %}
+  {% if section.settings.enable_countdownbar and endDateTime >= currentTime %}
+    <section class="countdown-bar-container" style="background:{{ section.settings.background-color }};">
+      <div class="countdown-bar-header">
+        <h1>{{ section.settings.countdown-bar-header }}</h1>
+      </div>
+      <div class="countdown" id="countdown" data-date="{{section.settings.countdown-bar-end-date}}" data-time="{{section.settings.countdown-bar-end-time}}">
+        <div class="day">
+          <span class="num"></span>
+          <span class="word"></span>
+        </div>
+        <div class="hour">
+          <span class="num"></span>
+          <span class="word"></span>
+        </div>
+        <div class="min">
+          <span class="num"></span>
+          <span class="word"></span>
+        </div>
+        <div class="sec">
+          <span class="num"></span>
+          <span class="word"></span>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+
+{% schema %}
+  {
+    "name": "Countdown Bar",
+    "class": "Countdown-Bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_countdownbar",
+        "default": false,
+        "label": "enable countdown-bar"
+      },
+      {
+        "type": "text",
+        "id": "countdown-bar-header",
+        "default": "Sale ends in",
+        "label": "Countdown header"
+      },      
+      {
+        "type": "text",
+        "id": "countdown-bar-end-date",
+        "default": "2-3-2023",
+        "label": "Countdown end date",
+        "info": "dd-mm-yyyy"
+      },
+      {
+        "type": "text",
+        "id": "countdown-bar-end-time",
+        "default": "00:00",
+        "label": "Countdown end date",
+        "info": "00:00"
+      },
+        {
+        "type": "color",
+        "id": "background-color",
+        "default": "#000",
+        "label": "Background color",
+        "info": "select background color"
+      }
+    ],
+       "presets": [
+      {
+        "name": "Countdown-Bar (BNK)"
+      }
+   ]
+    
+  }
+{% endschema %}
+
+<script>
+  
+  var dateDown = new countdown({
+    target: '#countdown',
+    dayWord: 'days',
+    hourWord: 'hours',
+    minWord: 'mins',
+    secWord: 'secs'
+  });
+</script>

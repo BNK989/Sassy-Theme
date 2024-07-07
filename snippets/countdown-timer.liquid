@@ -1,0 +1,196 @@
+{% comment %}For Page Targeting{% endcomment %}
+
+{%- assign show_on_page = true -%}
+{%- if settings.page_targeting == 'home_page_only' -%}
+{%- assign show_on_page = false -%}
+{%- if template == 'index' -%}
+{%- assign show_on_page = true -%}
+{%- endif -%}
+{%- endif -%}
+
+{% comment %}For Customenr Targeting{% endcomment %}
+
+{%- assign vipCustomerEnable = false -%}
+{%- assign vipCustomer = true -%}
+{%- if settings.customer_targeting == 'based_on_customer_tag' -%}
+{%- assign vipCustomerEnable = true -%}
+{%- endif -%}
+{%- if vipCustomerEnable -%}
+{%- assign vipCustomer = false -%}
+{%- if customer -%}
+{%- for tag in customer.tags -%}
+{%- if settings.customer_targeting_tag contains tag -%}
+{%- assign vipCustomer = true -%}
+{%- break -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endif -%}
+
+{% comment %}For Product Targeting{% endcomment %}
+
+{%- assign vipProductEnable = false -%}
+{%- assign vipProduct = true -%}
+{%- if settings.product_targeting == 'based_on_product_tag' -%}
+{%- assign vipProductEnable = true -%}
+{%- endif -%}
+{%- if vipProductEnable -%}
+{%- assign vipProduct = false -%}
+{%- if template.name == 'product' -%}
+{%- for tag in product.tags -%}
+{%- if settings.product_targeting_tag contains tag -%}
+{%- assign vipProduct = true -%}
+{%- break -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endif -%}
+
+{% comment %}After finish countdown type{% endcomment %}
+
+{%- assign typeShowMessage = fasle -%}
+{%- if settings.finish_type and settings.finish_message != blank -%}
+{%- assign typeShowMessage = true -%}
+{%- endif -%}
+
+{{ 'countdown-timer.css' | asset_url | stylesheet_tag }}
+
+{% comment %}{ if settings.bar_enable and settings.end_date != blank and settings.start_date != blank and vipCustomer and vipProduct and show_on_page }{% endcomment %}
+{% if settings.bar_enable %}
+
+  
+  <div id="countdownContainer" class="countdownContainer {% if settings.device_targeting == 'only_mobile' %}hidden-tablet-and-up{% elsif settings.device_targeting == 'only_desktop' %}hidden-phone hidden-tablet{% endif %}" style="display:none;">
+    <div class="countdown_content__wrapper">
+      {% if settings.bar_close_btn_enable %}
+        <a id="closeCountDown" href="javascript:void(0);" class="closeCountDown">&times;</a>
+      {% endif %}
+      <div class="clockCover">
+        {% if settings.mgs_before_timer != blank %}
+          <div class="mgs_before_timer">{{ settings.mgs_before_timer }}</div>
+        {% endif %}
+        <div class="container-countdown">
+          <div id="countdown" class="countdown"></div>
+        </div>
+        {% if settings.mgs_after_timer != blank %}
+          <div class="mgs_after_timer">{{ settings.mgs_after_timer }}</div>
+        {% endif %}
+
+        {% if settings.bar_clickable_type == 'button_clickable' and settings.button_text != blank and settings.link_url != blank %}
+          <div class="bar_button_wrap">
+            <a href="{{ settings.link_url }}" class="Button bar_button cct-animated cct-infinite cct-{{ settings.button_animation }}" {% if settings.open_in_newtab %}target="_blank"{% endif %}>{{ settings.button_text }}</a>
+          </div>
+        {% endif %}
+      </div>
+      {% if settings.bar_clickable_type == 'wholebar_clickable' and settings.link_url != blank %}
+        <a href="{{ settings.link_url }}" class="barClickable" {% if settings.open_in_newtab %}target="_blank"{% endif %}></a>
+      {% endif %}
+    </div>
+  </div>
+  
+  {{ 'flipclock.min.js' | asset_url | script_tag }}
+  <script src="https://momentjs.com/downloads/moment.min.js"></script>
+  <script src="https://momentjs.com/downloads/moment-timezone.min.js"></script>
+  <script>
+    
+ 
+    moment.tz.add('America/New_York|EST EDT|50 40|0101|1Lz50 1zb0 Op0');
+    const getNY = (date) => {
+      const nyOffset = moment.tz(new Date(), "America/New_York")._offset;
+      const localDate = typeof date === "number" ? new Date(date) : date;
+      return new Date(localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset() - nyOffset));
+    }
+
+    var startDate = '{{ settings.start_date }} {{ settings.start_time | default: '00:00' }}',
+    endDate = '{{ settings.end_date }} {{ settings.end_time | default: '00:00' }}',
+    display_before_retraction = {{ settings.display_before_retraction }},
+    animation_delay = {{ settings.animation_delay | times: 1000 }};
+    typeShowMessage = '{{ typeShowMessage }}',
+    finish_message = '<div class="finish_message">{{ settings.finish_message }}</div>';
+    (function() {
+      var countDownStartDate = getNY(new Date(startDate)).getTime(),
+          countDownDate = getNY(new Date(endDate)).getTime(),
+          totalSeconds = Math.floor((countDownDate - new Date().getTime()) / 1000),
+          countdown,
+          init_countdown,
+          set_countdown,
+          $container = $('#countdownContainer');
+
+        countdown = init_countdown = function(totalSeconds) {
+          var remiderDays = totalSeconds/86400,
+              remiderHours = totalSeconds/3600,
+              remiderMinutes = totalSeconds/60,
+              clockFace = 'DailyCounter';
+  
+          if(remiderDays < 1 && remiderHours > 1) {
+            clockFace = 'HourlyCounter';
+          } else if(remiderDays < 1 && remiderHours < 1) {
+            clockFace = 'MinuteCounter';
+          }
+  
+          countdown = new FlipClock($('.countdown'), {
+            clockFace: clockFace,
+            language: 'en',
+            autoStart: false,
+            countdown: true,
+            showSeconds: true,
+            callbacks: {
+              start: function() {
+                $container.show().addClass(clockFace);
+              },
+              stop: function() {
+                if(typeShowMessage == 'true'){
+                  $('.clockCover').html(finish_message);
+                } else {
+                  $container.hide();
+                }
+              },
+              interval: function() {
+                var time;
+                time = this.factory.getTime().time;
+                if (time) {
+                  var left_days = time/86400;
+                  if(left_days < 1) {
+                  }
+                }
+              }
+            }
+          });
+          return countdown;
+        };
+
+        set_countdown = function(seconds, start) {
+          var elapsed, end, left_secs, now, seconds;
+          if (countdown.running) {
+            return;
+          }
+          now = new Date();
+          start = new Date(start);
+          end = start.getTime() + seconds * 1000;
+          left_secs = Math.round((end - now.getTime()) / 1000);
+          elapsed = false;
+          if (left_secs < 0) {
+            left_secs *= -1;
+            elapsed = true;
+          }
+          countdown.setTime(left_secs);
+          return countdown.start();
+        };
+
+        setTimeout(function() {
+          if(countDownStartDate < new Date().getTime() && new Date().getTime() < countDownDate) {
+            init_countdown(totalSeconds);
+            set_countdown(totalSeconds, new Date());
+          }
+        },display_before_retraction * 1000);
+
+        $(document).on("click", '.closeCountDown', function() {
+          if(animation_delay) {
+            $container.slideUp(animation_delay);
+          } else {
+            $container.hide();
+          }
+        });
+    }).call(this);
+
+  </script>
+{% endif %}
