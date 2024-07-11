@@ -12,9 +12,9 @@
     "71186382-fd3a-4b85-89f2-c91aa8f8d69d": {
       "type": "image-banner",
       "settings": {
-        "image_desktop": "shopify:\/\/shop_images\/First_Type1_59b7fab9-6854-4332-bf1c-fef421e42645.jpg",
+        "image_desktop": "shopify:\/\/shop_images\/Type1_st_Patricks_1_a80c3743-ec3e-481a-b481-e4c342176c7f.jpg",
         "desktop_bottom_px": 105,
-        "image_mobile": "shopify:\/\/shop_images\/Lunhch_Image_ccbb5fdb-a7a0-4a75-94c5-83dabae2ddc6.jpg",
+        "image_mobile": "shopify:\/\/shop_images\/st_patricks_Type1_mobile_db38a0a4-2371-4528-ba06-392054bc383d.jpg",
         "mobile_bottom_px": 10,
         "button_link": "shopify:\/\/collections\/new-in",
         "button_text": "SHOP NOW",
@@ -23,7 +23,7 @@
         "text_color": "#000000",
         "button_color": "#000000",
         "button_text_color": "#ffffff",
-        "disable_lazy_load": false
+        "disable_lazy_load": true
       }
     },
     "image-with-text": {
