@@ -1,6 +1,763 @@
+{% doc %}
+  @prompt
+    create a q&A section where I can put in a question and a dropdown icon would allow users to have the question open, i.e. answere revealed or closed, allow site users to open as many question as they want and allow our webmaster to enter as many quetion + answers as they need.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-faq-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    padding: {{ block.settings.section_padding }}px;
+  }
+
+  .ai-faq-title-{{ ai_gen_id }} {
+    text-align: {{ block.settings.title_alignment }};
+    color: {{ block.settings.title_color }};
+    font-size: {{ block.settings.title_size }}px;
+    margin-bottom: {{ block.settings.title_spacing }}px;
+  }
+
+  .ai-faq-list-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.item_spacing }}px;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }} {
+    border: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+    background-color: {{ block.settings.item_background }};
+  }
+
+  .ai-faq-question-{{ ai_gen_id }} {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: {{ block.settings.question_padding }}px;
+    background-color: {{ block.settings.question_background }};
+    color: {{ block.settings.question_color }};
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: {{ block.settings.question_size }}px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.question_hover_background }};
+  }
+
+  .ai-faq-question-text-{{ ai_gen_id }} {
+    flex: 1;
+    padding-right: 16px;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    transition: transform 0.3s ease;
+    color: {{ block.settings.icon_color }};
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-icon-{{ ai_gen_id }} {
+    transform: rotate(180deg);
+  }
+
+  .ai-faq-answer-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .ai-faq-answer-content-{{ ai_gen_id }} {
+    padding: 0 {{ block.settings.question_padding }}px {{ block.settings.question_padding }}px;
+    color: {{ block.settings.answer_color }};
+    font-size: {{ block.settings.answer_size }}px;
+    line-height: 1.6;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-answer-{{ ai_gen_id }} {
+    max-height: 1000px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-faq-container-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding | times: 0.6 }}px;
+    }
+
+    .ai-faq-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+
+    .ai-faq-question-{{ ai_gen_id }} {
+      font-size: {{ block.settings.question_size | times: 0.9 }}px;
+      padding: {{ block.settings.question_padding | times: 0.8 }}px;
+    }
+
+    .ai-faq-answer-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.answer_size | times: 0.9 }}px;
+      padding: 0 {{ block.settings.question_padding | times: 0.8 }}px {{ block.settings.question_padding | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<faq-accordion-{{ ai_gen_id }} class="ai-faq-container-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.title != blank %}
+    <h2 class="ai-faq-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+  {% endif %}
+
+  <div class="ai-faq-list-{{ ai_gen_id }}">
+    {% if block.settings.question_1 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_1 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_1 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_2 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_2 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_2 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_3 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_3 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_3 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_4 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_4 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_4 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_5 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_5 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_5 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_6 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_6 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_6 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_7 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_7 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_7 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_8 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_8 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_8 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_9 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_9 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_9 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.question_10 != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">
+            {{ block.settings.question_10 }}
+          </span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.answer_10 }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</faq-accordion-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FaqAccordion{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.items = this.querySelectorAll('[data-faq-item]');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.items.forEach((item) => {
+          const button = item.querySelector('[data-faq-button]');
+
+          button.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+
+            if (isActive) {
+              item.classList.remove('active');
+              button.setAttribute('aria-expanded', 'false');
+            } else {
+              item.classList.add('active');
+              button.setAttribute('aria-expanded', 'true');
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('faq-accordion-{{ ai_gen_id }}', FaqAccordion{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "FAQ accordion",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between items",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Title style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Font size",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color",
+      "default": "#020912"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Question style"
+    },
+    {
+      "type": "range",
+      "id": "question_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Text color",
+      "default": "#020912"
+    },
+    {
+      "type": "color",
+      "id": "question_background",
+      "label": "Background color",
+      "default": "#fcfcfc"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_background",
+      "label": "Hover background color",
+      "default": "#e4f6ff"
+    },
+    {
+      "type": "range",
+      "id": "question_padding",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Answer style"
+    },
+    {
+      "type": "range",
+      "id": "answer_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Text color",
+      "default": "#020912"
+    },
+    {
+      "type": "header",
+      "content": "Icon style"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Color",
+      "default": "#020912"
+    },
+    {
+      "type": "header",
+      "content": "Item style"
+    },
+    {
+      "type": "color",
+      "id": "item_background",
+      "label": "Background color",
+      "default": "#fcfcfc"
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Border thickness",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e4f6ff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Question 1"
+    },
+    {
+      "type": "text",
+      "id": "question_1",
+      "label": "Question",
+      "default": "What is your return policy?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_1",
+      "label": "Answer",
+      "default": "<p>We offer a 30-day return policy on all items. Products must be in their original condition with tags attached.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Question 2"
+    },
+    {
+      "type": "text",
+      "id": "question_2",
+      "label": "Question",
+      "default": "How long does shipping take?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_2",
+      "label": "Answer",
+      "default": "<p>Standard shipping typically takes 5-7 business days. Express shipping options are available at checkout.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Question 3"
+    },
+    {
+      "type": "text",
+      "id": "question_3",
+      "label": "Question",
+      "default": "Do you ship internationally?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_3",
+      "label": "Answer",
+      "default": "<p>Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by location.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Question 4"
+    },
+    {
+      "type": "text",
+      "id": "question_4",
+      "label": "Question"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_4",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "Question 5"
+    },
+    {
+      "type": "text",
+      "id": "question_5",
+      "label": "Question"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_5",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "Question 6"
+    },
+    {
+      "type": "text",
+      "id": "question_6",
+      "label": "Question"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_6",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "Question 7"
+    },
+    {
+      "type": "text",
+      "id": "question_7",
+      "label": "Question"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_7",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "Question 8"
+    },
+    {
+      "type": "text",
+      "id": "question_8",
+      "label": "Question"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_8",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "Question 9"
+    },
+    {
+      "type": "text",
+      "id": "question_9",
+      "label": "Question"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_9",
+      "label": "Answer"
+    },
+    {
+      "type": "header",
+      "content": "Question 10"
+    },
+    {
+      "type": "text",
+      "id": "question_10",
+      "label": "Question"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_10",
+      "label": "Answer"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ accordion"
+    }
+  ]
+}
 {% endschema %}
