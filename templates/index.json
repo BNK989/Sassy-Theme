@@ -1,22 +1,78 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "1765351834fcf84e64": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4a27239_rK39pF": {
+          "type": "ai_gen_block_4a27239",
+          "settings": {
+            "title": "Frequently Asked Questions",
+            "title_alignment": "center",
+            "max_width": 800,
+            "section_padding": 40,
+            "item_spacing": 12,
+            "title_size": 32,
+            "title_color": "#020912",
+            "title_spacing": 32,
+            "question_size": 16,
+            "question_color": "#020912",
+            "question_background": "#fcfcfc",
+            "question_hover_background": "#e4f6ff",
+            "question_padding": 20,
+            "answer_size": 14,
+            "answer_color": "#020912",
+            "icon_size": 24,
+            "icon_color": "#020912",
+            "item_background": "#fcfcfc",
+            "border_thickness": 1,
+            "border_color": "#e4f6ff",
+            "border_radius": 8,
+            "question_1": "What is your return policy?",
+            "answer_1": "<p>We offer a 30-day return policy on all items. Products must be in their original condition with tags attached.</p>",
+            "question_2": "How long does shipping take?",
+            "answer_2": "<p>Standard shipping typically takes 5-7 business days. Express shipping options are available at checkout.</p>",
+            "question_3": "Do you ship internationally?",
+            "answer_3": "<p>Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by location.</p>",
+            "question_4": "",
+            "answer_4": "",
+            "question_5": "",
+            "answer_5": "",
+            "question_6": "",
+            "answer_6": "",
+            "question_7": "",
+            "answer_7": "",
+            "question_8": "",
+            "answer_8": "",
+            "question_9": "",
+            "answer_9": "",
+            "question_10": "",
+            "answer_10": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4a27239_rK39pF"
+      ],
+      "settings": {}
+    },
     "71186382-fd3a-4b85-89f2-c91aa8f8d69d": {
       "type": "image-banner",
       "settings": {
-        "image_desktop": "shopify:\/\/shop_images\/Type1_st_Patricks_1_a80c3743-ec3e-481a-b481-e4c342176c7f.jpg",
+        "image_desktop": "shopify://shop_images/Type1_st_Patricks_1_a80c3743-ec3e-481a-b481-e4c342176c7f.jpg",
         "desktop_bottom_px": 105,
-        "image_mobile": "shopify:\/\/shop_images\/st_patricks_Type1_mobile_db38a0a4-2371-4528-ba06-392054bc383d.jpg",
+        "image_mobile": "shopify://shop_images/st_patricks_Type1_mobile_db38a0a4-2371-4528-ba06-392054bc383d.jpg",
         "mobile_bottom_px": 10,
-        "button_link": "shopify:\/\/collections\/new-in",
+        "button_link": "shopify://collections/new-in",
         "button_text": "SHOP NOW",
         "image_size": "2000x",
         "btn_bottom": false,
@@ -40,7 +96,7 @@
           "type": "text",
           "disabled": true,
           "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product or collection.<\/p>",
+            "text": "<p>Pair text with an image to focus on your chosen product or collection.</p>",
             "text_style": "body"
           }
         },
@@ -48,7 +104,7 @@
           "type": "button",
           "settings": {
             "button_label": "SHOP NOW",
-            "button_link": "shopify:\/\/collections\/new-in"
+            "button_link": "shopify://collections/new-in"
           }
         }
       },
@@ -59,7 +115,7 @@
       ],
       "disabled": true,
       "settings": {
-        "image_url": "shopify:\/\/collections\/new-in",
+        "image_url": "shopify://collections/new-in",
         "height": "adapt",
         "desktop_image_width": "medium",
         "layout": "image_first",
@@ -189,7 +245,7 @@
           "type": "text",
           "disabled": true,
           "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product. Add details on availability, style, or even provide a review.<\/p>",
+            "text": "<p>Pair text with an image to focus on your chosen product. Add details on availability, style, or even provide a review.</p>",
             "text_style": "body"
           }
         },
@@ -197,7 +253,7 @@
           "type": "button",
           "settings": {
             "button_label": "Button label",
-            "button_link": "shopify:\/\/pages\/contact"
+            "button_link": "shopify://pages/contact"
           }
         }
       },
@@ -208,7 +264,7 @@
       ],
       "disabled": true,
       "settings": {
-        "image_url": "shopify:\/\/collections\/backpacks",
+        "image_url": "shopify://collections/backpacks",
         "height": "adapt",
         "desktop_image_width": "small",
         "layout": "text_first",
@@ -240,8 +296,7 @@
         },
         "price": {
           "type": "price",
-          "settings": {
-          }
+          "settings": {}
         },
         "variant-picker": {
           "type": "variant_picker",
@@ -253,8 +308,7 @@
         "quantity-selector": {
           "type": "quantity_selector",
           "disabled": true,
-          "settings": {
-          }
+          "settings": {}
         },
         "buy_button": {
           "type": "buy_buttons",
@@ -290,7 +344,7 @@
           "type": "column",
           "settings": {
             "title": "Column",
-            "text": "<p>Use a combination of images and text to share key product information or brand values.<\/p>",
+            "text": "<p>Use a combination of images and text to share key product information or brand values.</p>",
             "link_label": "",
             "link": ""
           }
@@ -299,7 +353,7 @@
           "type": "column",
           "settings": {
             "title": "Column",
-            "text": "<p>Use a combination of images and text to share key product information or brand values.<\/p>",
+            "text": "<p>Use a combination of images and text to share key product information or brand values.</p>",
             "link_label": "Learn more",
             "link": ""
           }
@@ -308,7 +362,7 @@
           "type": "column",
           "settings": {
             "title": "Column",
-            "text": "<p>Use a combination of images and text to share key product information or brand values.<\/p>",
+            "text": "<p>Use a combination of images and text to share key product information or brand values.</p>",
             "link_label": "",
             "link": ""
           }
@@ -405,13 +459,12 @@
         "template--17519391047958__281e6dca-97a4-4387-befc-f9bedcf7a123-1673961506d6d1ffc7-1": {
           "type": "paragraph",
           "settings": {
-            "text": "<p>Be the first to know<\/p>"
+            "text": "<p>Be the first to know</p>"
           }
         },
         "template--17519391047958__281e6dca-97a4-4387-befc-f9bedcf7a123-1673961506d6d1ffc7-2": {
           "type": "email_form",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -438,6 +491,7 @@
     "multicolumn",
     "featured-collection-1",
     "4e14e03c-a346-4b67-b069-7f600b4e28a1",
-    "281e6dca-97a4-4387-befc-f9bedcf7a123"
+    "281e6dca-97a4-4387-befc-f9bedcf7a123",
+    "1765351834fcf84e64"
   ]
 }
